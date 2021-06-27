@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produto;
+use App\Models\Venda;
+use App\Models\EstatisticaProduto;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -41,14 +43,18 @@ class ProdutoController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->descricao);
-        Produto::create([
-            'nome' => $request->nome,
-            'preco_venda' => $request->preco_venda,
-            'descricao' => "aaaaaaaaaaaaaaaaaaaaaaa",
-           
-        ]);
+        // dd($request->all());
+        $produto = new Produto();
+        
+        $produto->nome = $request->nome;
+        $produto->preco_venda = $request->preco_venda;
+        $produto->descricao = $request->descricao;
+        $produto->custo = $request->custo;
+        $produto->estoque = $request->estoque;
+        $produto->user_id = $request->user_id;
 
+        $produto->save();
+        
         return view('produto.create', [
             'msg' => 'Produto criado com sucesso'
         ]);
@@ -62,7 +68,55 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
+
+        $vendas = Venda::where('produto_id', $id)->get();
+
+        $quantidadeDeProdutosVendidos = 0;
+        $totalValorVendas = 0;
         $produto = Produto::find($id);
+
+        foreach ($vendas as $venda) {
+            $quantidadeDeProdutosVendidos += $venda->quantidade;
+            $totalValorVendas += $venda->quantidade * $produto->preco_venda;
+        }
+
+        $totalCusto = $produto->custo * $quantidadeDeProdutosVendidos;
+
+        // dd($quantidadeDeProdutosVendidos, $totalValorVendas, $totalCusto);
+        // $produto = Produto::with(['estatistica', 'vendas'])->find($id);
+
+        $estatisticasProduto = EstatisticaProduto::where('produto_id', $produto->id)->get();
+        // $estatisticasProduto = EstatisticaProduto::all();
+
+        if(!isset($estatisticasProduto[0])){
+            $estatisticasProduto  = new EstatisticaProduto();
+            
+            $estatisticasProduto->produto_id = $produto->id;
+            $estatisticasProduto->balanco =  $totalValorVendas - $totalCusto;
+            $estatisticasProduto->ltv = 5;
+            $estatisticasProduto->cac = 40;
+            $estatisticasProduto->ticket_medio = $totalValorVendas / $quantidadeDeProdutosVendidos;
+            $estatisticasProduto->ROI = 1.2;
+            $estatisticasProduto->NPS = 7;
+            $estatisticasProduto->taxa_convercao = 0.09;
+            
+            $estatisticasProduto->save();
+
+        } else{
+            $estatisticasProduto[0]->produto_id = $produto->id;
+            $estatisticasProduto[0]->balanco =  $totalValorVendas - $totalCusto;
+            $estatisticasProduto[0]->ltv = 5;
+            $estatisticasProduto[0]->cac = 40;
+            $estatisticasProduto[0]->ticket_medio = $totalValorVendas / $quantidadeDeProdutosVendidos;
+            $estatisticasProduto[0]->ROI = 1.2;
+            $estatisticasProduto[0]->NPS = 7;
+            $estatisticasProduto[0]->taxa_convercao = 0.09;
+            
+            $estatisticasProduto[0]->save();
+            
+
+        }
+
         return view('produto.show', [
             'produto' => $produto
         ]);
@@ -94,7 +148,15 @@ class ProdutoController extends Controller
     {
         //
         $produto = Produto::find($id);
-        $produto->update($request->all());
+  
+        $produto->nome = $request->nome;
+        $produto->preco_venda = $request->preco_venda;
+        $produto->descricao = $request->descricao;
+        $produto->custo = $request->custo;
+        $produto->estoque = $request->estoque;
+        $produto->user_id = $request->user_id;
+
+        $produto->save();
 
         return redirect()->route('produto.show', [
             'produto' => $produto->id

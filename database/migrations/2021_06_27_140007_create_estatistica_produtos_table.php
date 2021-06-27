@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEstatisticasTable extends Migration
+class CreateEstatisticaProdutosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateEstatisticasTable extends Migration
      */
     public function up()
     {
-        Schema::create('estatistica_usuarios', function (Blueprint $table) {
+        Schema::create('estatistica_produtos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('produto_id');
+            $table->foreign('produto_id')->references('id')->on('produtos');
             $table->decimal('balanco', 10, 2)->nullable()->default(0);
             $table->bigInteger('ltv')->nullable()->default(0);
             $table->decimal('cac', 10, 2)->nullable()->default(0);
@@ -35,6 +35,6 @@ class CreateEstatisticasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estatisticas');
+        Schema::dropIfExists('estatistica_produtos');
     }
 }

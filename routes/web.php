@@ -22,7 +22,7 @@ Route::get('/charts', function () {
 });
 
 Route::get('/forms', function () {
-    return view('dashboard.create');
+    return view('dashboard.forms');
 });
 
 Route::get('/tables', function () {

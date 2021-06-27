@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+// use App\Models\User;
 
 class CreateUsersTable extends Migration
 {
@@ -22,10 +23,20 @@ class CreateUsersTable extends Migration
             $table->string('numeroInscricao');
             $table->string('nivel');
             $table->string('site');
-            $table->string('localização');
+            $table->string('localizacao');
             $table->rememberToken();
             $table->timestamps();
         });
+
+        $user = new App\Models\User();
+        $user->nome = "Guilherme";
+        $user->email = "guilherme@gmail.com";
+        $user->password = "12345678";
+        $user->numeroInscricao = "00011122233";
+        $user->nivel = "ADM";
+        $user->site = "guilherme.com";
+        $user->localizacao = "Brasília";
+        $user->save();
     }
 
     /**

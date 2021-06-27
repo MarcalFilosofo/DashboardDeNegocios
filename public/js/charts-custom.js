@@ -544,26 +544,20 @@ $(document).ready(function () {
         },
         data: {
             labels: [
-                "A",
-                "B",
-                "C",
-                "D"
+                "Geral",
+                "Produto",
             ],
             datasets: [
                 {
-                    data: [120, 90, 77, 95],
-                    borderWidth: [0, 0, 0, 0],
+                    data: [90, 10],
+                    borderWidth: [0, 0],
                     backgroundColor: [
-                        '#b53dde',
-                        "#CF53F9",
-                        "#d06cf2",
-                        "#de97f6"
+                        '#7127AC',
+                        "#CF53F9"
                     ],
                     hoverBackgroundColor: [
-                        '#b53dde',
-                        "#CF53F9",
-                        "#d06cf2",
-                        "#de97f6"
+                        '#7127AC',
+                        "#CF53F9"
                     ]
                 }]
         }
@@ -575,7 +569,7 @@ $(document).ready(function () {
     // Polar Chart
     // ------------------------------------------------------ //
     var chartOptions = {
-        scale: {
+        scale: {    
             gridLines: {
                 color: '#3f4145'
             },
@@ -661,7 +655,7 @@ $(document).ready(function () {
         type: 'radar',
         options: chartOptions,
         data: {
-            labels: ["A", "B", "C", "D", "E", "C"],
+            labels: ["Ticket Médio", "Taxa de Conversão", "Margem de Lucro", "Tempo de Recompra", "NPS", "ROI"],
             datasets: [
                 {
                     label: "First dataset",

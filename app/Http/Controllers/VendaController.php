@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Venda;
+use App\Models\Produto;
+
 use Illuminate\Http\Request;
 
 class VendaController extends Controller
@@ -14,7 +16,13 @@ class VendaController extends Controller
      */
     public function index()
     {
-        //
+        // $vendas = Venda::with('produto')->get();
+        $vendas = Venda::all();
+
+        
+        return view('venda.index', [
+            'vendas' => $vendas
+        ]);
     }
 
     /**
@@ -25,6 +33,12 @@ class VendaController extends Controller
     public function create()
     {
         //
+        $produtos = Produto::all();
+
+        return view('venda.create', [
+            'produtos' => $produtos
+        ]);
+
     }
 
     /**
@@ -36,6 +50,14 @@ class VendaController extends Controller
     public function store(Request $request)
     {
         //
+        Venda::create($request->all());
+
+        $produtos = Produto::all();
+
+        return view('venda.create', [
+            'msg' => "Venda cadastrada com sucesso",
+            'produtos' => $produtos
+        ]);
     }
 
     /**
@@ -47,6 +69,9 @@ class VendaController extends Controller
     public function show(Venda $venda)
     {
         //
+
+        return view('venda.show', ['venda' => $venda]);
+
     }
 
     /**
@@ -58,6 +83,12 @@ class VendaController extends Controller
     public function edit(Venda $venda)
     {
         //
+        $produtos = Produto::all();
+
+        return view('venda.edit', [
+            'venda' => $venda,
+            'produtos' => $produtos
+        ]);
     }
 
     /**
@@ -70,6 +101,14 @@ class VendaController extends Controller
     public function update(Request $request, Venda $venda)
     {
         //
+
+        $venda->update($request->all());
+        $produtos = Produto::all();
+
+        return redirect()->route('venda.edit', [
+            'venda' => $venda,
+            'produtos' => $produtos 
+        ]);
     }
 
     /**
@@ -81,5 +120,7 @@ class VendaController extends Controller
     public function destroy(Venda $venda)
     {
         //
+        $venda->delete();
+        return redirect()->route('venda.index');
     }
 }
