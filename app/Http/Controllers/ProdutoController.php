@@ -7,6 +7,9 @@ use App\Models\Venda;
 use App\Models\EstatisticaProduto;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
+
 class ProdutoController extends Controller
 {
     /**
@@ -68,58 +71,35 @@ class ProdutoController extends Controller
      */
     public function show($id)
     {
-
-        $vendas = Venda::where('produto_id', $id)->get();
-
-        $quantidadeDeProdutosVendidos = 0;
-        $totalValorVendas = 0;
+        
         $produto = Produto::find($id);
+        $quantidadeProdutoVendido = Venda::selectRaw('SUM(quantidade) as quantidade')->where('produto_id', $id)->first();
+        $horariosVenda = Venda::selectRaw('count(id) as quantidade_venda_media, hour(horario_venda) as horario_venda')->where('produto_id', $id)->groupByRaw('hour(horario_venda)')->orderBy('quantidade_venda_media', 'desc')->paginate(3);
+        $margemLucro = $produto->preco_venda - $produto->custo;
+        $faturamentoTotal = $quantidadeProdutoVendido->quantidade * $produto->preco_venda;
+        $lucroTotal = $margemLucro * $quantidadeProdutoVendido->quantidade;
 
-        foreach ($vendas as $venda) {
-            $quantidadeDeProdutosVendidos += $venda->quantidade;
-            $totalValorVendas += $venda->quantidade * $produto->preco_venda;
-        }
 
-        $totalCusto = $produto->custo * $quantidadeDeProdutosVendidos;
-
-        // dd($quantidadeDeProdutosVendidos, $totalValorVendas, $totalCusto);
-        // $produto = Produto::with(['estatistica', 'vendas'])->find($id);
-
-        $estatisticasProduto = EstatisticaProduto::where('produto_id', $produto->id)->get();
-        // $estatisticasProduto = EstatisticaProduto::all();
-
-        if(!isset($estatisticasProduto[0])){
-            $estatisticasProduto  = new EstatisticaProduto();
-            
-            $estatisticasProduto->produto_id = $produto->id;
-            $estatisticasProduto->balanco =  $totalValorVendas - $totalCusto;
-            $estatisticasProduto->ltv = 5;
-            $estatisticasProduto->cac = 40;
-            $estatisticasProduto->ticket_medio = $totalValorVendas / $quantidadeDeProdutosVendidos;
-            $estatisticasProduto->ROI = 1.2;
-            $estatisticasProduto->NPS = 7;
-            $estatisticasProduto->taxa_convercao = 0.09;
-            
-            $estatisticasProduto->save();
-
+        if(isset($_GET['API'])){
+            return response()->json([
+                'produto' => $produto,
+                'quantidadeProdutoVendido' => $quantidadeProdutoVendido->quantidade,
+                'horariosVenda' => [
+                    $horariosVenda[0],
+                    $horariosVenda[1],
+                    $horariosVenda[2],
+                ],
+                'margemLucro' => number_format($margemLucro, 2, '.', ''),
+                'faturamentoTotal' => number_format($faturamentoTotal, 2, '.', ''),
+                'lucroTotal' => number_format($lucroTotal, 2, '.', ''),
+            ], 200);
         } else{
-            $estatisticasProduto[0]->produto_id = $produto->id;
-            $estatisticasProduto[0]->balanco =  $totalValorVendas - $totalCusto;
-            $estatisticasProduto[0]->ltv = 5;
-            $estatisticasProduto[0]->cac = 40;
-            $estatisticasProduto[0]->ticket_medio = $totalValorVendas / $quantidadeDeProdutosVendidos;
-            $estatisticasProduto[0]->ROI = 1.2;
-            $estatisticasProduto[0]->NPS = 7;
-            $estatisticasProduto[0]->taxa_convercao = 0.09;
-            
-            $estatisticasProduto[0]->save();
-            
-
+            return view('produto.show', [
+                'produto' => $produto
+            ]);
         }
 
-        return view('produto.show', [
-            'produto' => $produto
-        ]);
+
     }
 
     /**

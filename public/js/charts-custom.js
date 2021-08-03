@@ -655,7 +655,7 @@ $(document).ready(function () {
         type: 'radar',
         options: chartOptions,
         data: {
-            labels: ["Ticket Médio", "Taxa de Conversão", "Margem de Lucro", "Tempo de Recompra", "NPS", "ROI"],
+            labels: ["LTV", "Taxa de Conversão", "Margem de Lucro", "", "NPS", "ROI"],
             datasets: [
                 {
                     label: "First dataset",
