@@ -69,7 +69,7 @@ class ProdutoController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request  $request)
     {
         
         $produto = Produto::find($id);
@@ -79,8 +79,7 @@ class ProdutoController extends Controller
         $faturamentoTotal = $quantidadeProdutoVendido->quantidade * $produto->preco_venda;
         $lucroTotal = $margemLucro * $quantidadeProdutoVendido->quantidade;
 
-
-        if(isset($_GET['API'])){
+        if($request->header('accept') == "application/json"){
             return response()->json([
                 'produto' => $produto,
                 'quantidadeProdutoVendido' => $quantidadeProdutoVendido->quantidade,

@@ -1,7 +1,7 @@
 @extends('layout.layout')
 @section('content')
  
-
+ 
     @component('layout.components.header')
         
     @endcomponent
@@ -32,16 +32,20 @@
             <div class="col-lg-8">
               <div class="line-chart block chart">
                 <div class="title"><strong>Vendas do produto X média</strong></div>
-                <canvas id="lineChartCustom1"></canvas>
+                <canvas id="barChartCustom3"></canvas>
               </div>
             </div>
             
             <div class="col-lg-4">
               <div class="chart block">
-                <div class="title"> <strong>Visitas ao produto X média</strong></div>
+                <div class="title"> <strong>Vendas por horário</strong></div>
+                <strong>Individual</strong>
+
                 <div class="bar-chart chart margin-bottom-sm">
                   <canvas id="barChartCustom1"></canvas>
                 </div>
+                <strong>Geral</strong>
+
                 <div class="bar-chart chart">
                   <canvas id="barChartCustom2"></canvas>
                 </div>
