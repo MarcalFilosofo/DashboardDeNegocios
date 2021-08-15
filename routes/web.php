@@ -29,6 +29,11 @@ Route::get('/tables', function () {
     return view('dashboard.index');
 });
 
+Route::get('/creditos', function () {
+    return view('dashboard.creditos');
+});
+
 Route::resource('produto', 'App\Http\Controllers\ProdutoController');
 Route::resource('venda', 'App\Http\Controllers\VendaController');
-
+Route::resource('dashboard', 'App\Http\Controllers\EstatisticaController');
+Route::get('metricasGerais', 'App\Http\Controllers\ProdutoController@metricasGerais')->name('metricasGerais');

@@ -18,27 +18,46 @@ function consultaProduto(id){
     return produto;
 }
 
+function consultaGeral(){
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("Cookie", "XSRF-TOKEN=eyJpdiI6InBYdzVaUEhEYlRRbFNSQUdNL2Q4ZHc9PSIsInZhbHVlIjoiQW5MN3p6N3N3TmZRb201RXp5VWNtM2VRSFBHZElvcU5qSFA1b2VlT3k4cWgzWkF5N2p6eDF3KzdGNDVUMnRQS2hoL0JvNnp0K25nNGNNM2wxaFQ5YnJDc21PR1hCUms5R29XZ3czWVJuMm9DZ3pZRXcrN2s3RkJLQVVPaldXNysiLCJtYWMiOiI1OTI1MTFhOTdlZGZiZmQ3MzcwMjFlNmY2NzgyZWM1OTc4NmQ2ZTNkZjRhMTQwMjk2NThiOTI2MTY1MTY2YzdiIn0%3D; laravel_session=eyJpdiI6IjF0N045RUpkdURZWDRIT2w2Yk9jRHc9PSIsInZhbHVlIjoianlPVlVRbnlaaFJncTk1UDF6K0Y4bDBqdTlRaStMZkpoMnQyaVE1WHhoemZUN1pHTHMxRTVpWkNoeEh2M29hWTFoUnY5K3NpR043UjVKYkxTKzR4RGs0aGdOeGx0bFNTMUNGaDVrcHpMdm1DV1hkc29zVlAwWGw4U1F0VEs5M3AiLCJtYWMiOiIwNzhlOThmOWZkMjE2MDY4ZjhiODAyMGMwZGIyYWQ0NmEwNzM1NTA1M2E2MGVhOTliMTY3YmE4OGM4NGM0NjA1In0%3D");
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+    
+    var geral = fetch(`http://localhost:8000/metricasGerais`, requestOptions)
+        .then(response => response.json())
+        .catch(error => console.log('error', error));
+    
+    return geral;
+}
+
 $(document).ready(async function () {
     var url = window.location.href.toString();
     url = url.split("/produto/");
     var produto_id = url[1];
+    var geral = await consultaGeral();
     let produto = await consultaProduto(produto_id);
-    let geral= {
-        estoque: 100 + produto.produto.estoque,
-        horariosVenda: [
-            {quantidade_venda_media: 10, horario_venda: 17},
-            {quantidade_venda_media: 6, horario_venda: 18},
-            {quantidade_venda_media: 4, horario_venda: 19}
-        ],
-        faturamentoTotal: parseInt(produto.faturamentoTotal) + 100,
-        lucroTotal: parseInt(produto.lucroTotal) + 100,
-        margemLucro: parseInt(produto.margemLucro) + 10,
-        quantidadeProdutoVendido: parseInt(produto.quantidadeProdutoVendido) +10 ,
+
+    // console.log(geral);
+    // let geral= {
+    //     estoque: 100 + produto.produto.estoque,
+    //     horariosVenda: [
+    //         {quantidade_venda_media: 10, horario_venda: 17},
+    //         {quantidade_venda_media: 6, horario_venda: 18},
+    //         {quantidade_venda_media: 4, horario_venda: 19}
+    //     ],
+    //     faturamentoTotal: parseInt(produto.faturamentoTotal) + 100,
+    //     lucroTotal: parseInt(produto.lucroTotal) + 100,
+    //     margemLucro: parseInt(produto.margemLucro) + 10,
+    //     quantidadeProdutoVendido: parseInt(produto.quantidadeProdutoVendido) +10 ,
         
         
-    };
-    console.log(produto);
-    'use strict';
+    // };
 
     Chart.defaults.global.defaultFontColor = '#75787c';
 
@@ -127,7 +146,6 @@ $(document).ready(async function () {
     // ------------------------------------------------------- //
     // Bar Chart Custom 1
     // ------------------------------------------------------ //
-    console.log(produto.horariosVenda[0].quantidade_venda_media);
     var BARCHART1 = $('#barChartCustom1');
     var barChartHome = new Chart(BARCHART1, {
         type: 'bar',
@@ -140,10 +158,10 @@ $(document).ready(async function () {
                     barPercentage: 0.2
                 }],
                 yAxes: [{
-                    ticks: {
-                        max: 24,
-                        min: 0
-                    },
+                    // ticks: {
+                    //     max: produto.horariosVenda[2].horario_venda + 10,
+                    //     min: 0
+                    // },
                     display: false
                 }],
             },
@@ -168,7 +186,7 @@ $(document).ready(async function () {
                         '#EF8C99'
                     ],
                     borderWidth: 0.3,
-                    data: [produto.horariosVenda[0].quantidade_venda_media,produto.horariosVenda[1].quantidade_venda_media ,produto.horariosVenda[2].quantidade_venda_media ]
+                    data: [produto.horariosVenda[0].quantidade_venda_media ,produto.horariosVenda[1].quantidade_venda_media ,produto.horariosVenda[2].quantidade_venda_media ]
                 }
             ]
         }
@@ -190,10 +208,10 @@ $(document).ready(async function () {
                     barPercentage: 0.2
                 }],
                 yAxes: [{
-                    ticks: {
-                        max: 100,
-                        min: 0
-                    },
+                    // ticks: {
+                    //     max: (geral.horariosVenda[2].horario_venda + 10),
+                    //     min: 0
+                    // },
                     display: false
                 }],
             },
@@ -416,7 +434,7 @@ $(document).ready(async function () {
             },
         },
         data: {
-            labels: ["faturamentoTotal", "lucroTotal", "margemLucro", "quantidadeProdutoVendido"],
+            labels: ["faturamentoTotal", "lucroTotal"],
             datasets: [
                 {
                     label: "Produto Individual",
@@ -439,7 +457,7 @@ $(document).ready(async function () {
                         "#864DD9"
                     ],
                     borderWidth: 0.5,
-                    data: [produto.faturamentoTotal, produto.lucroTotal, produto.margemLucro, produto.quantidadeProdutoVendido],
+                    data: [produto.faturamentoTotal + 0, produto.lucroTotal + 0],
                 },
                 {
                     label: "Geral",
@@ -462,7 +480,7 @@ $(document).ready(async function () {
                         "rgba(98, 98, 98, 0.5)"
                     ],
                     borderWidth: 0.5,
-                    data: [geral.faturamentoTotal, geral.lucroTotal, geral.margemLucro, geral.quantidadeProdutoVendido],
+                    data: [parseInt(geral.faturamentoTotal), parseInt(geral.lucroTotal)],
                 }
             ]
         }
@@ -657,7 +675,7 @@ $(document).ready(async function () {
                     pointBorderColor: "#fff",
                     pointHoverBackgroundColor: "#fff",
                     pointHoverBorderColor: "#7127AC",
-                    data: [2 * 10, 8 * 10, produto.margemLucro * 10, 1 * 10, produto.produto.nps * 10, 5.0 * 10]
+                    data: [2 * 10, 8 * 10, produto.margemLucro * 10, 1 * 10, (produto.produto.nps + 0) * 10, 5.0 * 10]
                 },
                 {
                     label: "Second dataset",

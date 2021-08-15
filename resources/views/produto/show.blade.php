@@ -29,9 +29,43 @@
       <section>
         <div class="container-fluid">
           <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <div class="statistic-block block">
+                <div class="progress-details d-flex align-items-end justify-content-between">
+                  <div class="title">
+                    <div class="icon"><i class="icon-user-1"></i></div><strong>Quantidade de vendas</strong>
+                  </div> 
+                  <div class="number dashtext-1">{{ $quantidadeProdutoVendido->quantidade ?? 0 }}</div>
+                </div>
+                <div class="progress progress-template">
+                  <div role="progressbar" style="width: {{($quantidadeProdutoVendido->quantidade / $quantidadeTotalVendido->quantidade) * 100}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-md-6 col-sm-12">
+              <div class="statistic-block block">
+                <div class="progress-details d-flex align-items-end justify-content-between">
+                  <div class="title">
+                    <div class="icon"><i class="icon-user-1"></i></div><strong>Quantidade de vendas</strong>
+                  </div>
+                  <div class="number dashtext-1">{{ ($quantidadeTotalVendido->quantidade )}}</div>
+                </div>
+                <div class="progress progress-template">
+                  <div role="progressbar" style="width: {{(1 - ($quantidadeProdutoVendido->quantidade / $quantidadeTotalVendido->quantidade)) * 100 }}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="container-fluid">
+          <div class="row">
             <div class="col-lg-8">
               <div class="line-chart block chart">
-                <div class="title"><strong>Vendas do produto X média</strong></div>
+                <div class="title"><strong>Lucro e faturamento</strong></div>
                 <canvas id="barChartCustom3"></canvas>
               </div>
             </div>

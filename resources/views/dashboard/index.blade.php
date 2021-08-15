@@ -16,6 +16,7 @@
             <h2 class="h5 no-margin-bottom">Dashboard</h2>
           </div>
         </div>
+  
         <section class="no-padding-top no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
@@ -23,12 +24,12 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-user-1"></i></div><strong>New Clients</strong>
+                      <div class="icon"><i class="icon-user-1"></i></div><strong>Total Vendas</strong>
                     </div>
-                    <div class="number dashtext-1">27</div>
+                    <div class="number dashtext-1" id="totalVendas">####</div>
                   </div>
                   <div class="progress progress-template">
-                    <div role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
+                    <div role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
                   </div>
                 </div>
               </div>
@@ -36,12 +37,12 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-contract"></i></div><strong>New Projects</strong>
+                      <div class="icon"><i class="icon-contract"></i></div><strong>Faturamento</strong>
                     </div>
-                    <div class="number dashtext-2">375</div>
+                    <div class="number dashtext-2" id="somatorioValorVendas">####</div>
                   </div>
                   <div class="progress progress-template">
-                    <div role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
+                    <div role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
                   </div>
                 </div>
               </div>
@@ -49,12 +50,12 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>New Invoices</strong>
+                      <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>Produtos</strong>
                     </div>
-                    <div class="number dashtext-3">140</div>
+                    <div class="number dashtext-3" id="produtosCadastrados">####</div>
                   </div>
                   <div class="progress progress-template">
-                    <div role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
+                    <div role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
                   </div>
                 </div>
               </div>
@@ -62,18 +63,28 @@
                 <div class="statistic-block block">
                   <div class="progress-details d-flex align-items-end justify-content-between">
                     <div class="title">
-                      <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>All Projects</strong>
+                      <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>NPS</strong>
                     </div>
-                    <div class="number dashtext-4">41</div>
+                    <div class="number dashtext-4" id="mediaNps">####</div>
                   </div>
                   <div class="progress progress-template">
-                    <div role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
+                    <div role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
+        <section class="no-padding-top no-padding-bottom">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12">
+                <input type="number" name="quantidade" id="quantidade" onblur="controleQuantidade(document.getElementById('quantidade').value)" class="input-material">
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
@@ -93,7 +104,7 @@
             </div>
           </div>
         </section>
-        <section class="no-padding-bottom">
+        {{-- <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
@@ -138,8 +149,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="no-padding-bottom">
+        </section> --}}
+        {{-- <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
@@ -240,8 +251,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="margin-bottom-sm">
+        </section> --}}
+        {{-- <section class="margin-bottom-sm">
           <div class="container-fluid">
             <div class="row d-flex align-items-stretch">
               <div class="col-lg-4">
@@ -291,8 +302,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section class="no-padding-bottom">
+        </section> --}}
+        {{-- <section class="no-padding-bottom">
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-6">
@@ -354,8 +365,8 @@
               </div>
             </div>
           </div>
-        </section>
-        <section>
+        </section> --}}
+        {{-- <section>
           <div class="container-fluid">
             <div class="row">
               <div class="col-lg-4">
@@ -387,10 +398,10 @@
               </div>
             </div>
           </div>
-        </section>
+        </section> --}}
         @component('layout.components.footer')
             
         @endcomponent
       </div>
-    
+      <script src="{{asset('js/util.js')}}"></script>
 @endsection
